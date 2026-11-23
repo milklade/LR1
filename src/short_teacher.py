@@ -1,8 +1,9 @@
 
 from .teacher import Teacher
+from .teacher_base import TeacherBase
 
 
-class ShortTeacher:
+class ShortTeacher(TeacherBase):
     """Класс краткого представления преподавателя."""
 
     def __init__(self, teacher):
@@ -11,30 +12,15 @@ class ShortTeacher:
                 "Необходимо передать объект класса Teacher."
             )
 
-        self.__teacher_id = teacher.teacher_id
-        self.__surname = teacher.surname
-        self.__first_name = teacher.first_name
-
-    @property
-    def teacher_id(self):
-        return self.__teacher_id
-
-    @property
-    def surname(self):
-        return self.__surname
-
-    @property
-    def first_name(self):
-        return self.__first_name
-
-    def __str__(self):
-        return (
-            f"Преподаватель: {self.__surname} "
-            f"{self.__first_name}, ID: {self.__teacher_id}"
+        super().__init__(
+            teacher.teacher_id,
+            teacher.surname,
+            teacher.first_name
         )
 
-    def __repr__(self):
+    def __str__(self):
+        """Возвращает краткую информацию о преподавателе."""
         return (
-            f"ShortTeacher(id={self.__teacher_id}, "
-            f"name='{self.__surname} {self.__first_name}')"
+            f"Преподаватель: {self.surname} "
+            f"{self.first_name}, ID: {self.teacher_id}"
         )

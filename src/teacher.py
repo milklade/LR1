@@ -4,9 +4,10 @@ from .validators import (
     validate_name,
     validate_phone
 )
+from .teacher_base import TeacherBase
 
 
-class Teacher:
+class Teacher(TeacherBase):
     """Класс преподавателя учебного заведения."""
 
     @staticmethod
@@ -49,14 +50,16 @@ class Teacher:
         self.validate_phone(phone)
         self.validate_work_experience(work_experience)
 
-        self.__teacher_id = teacher_id
-        self.__surname = surname.strip()
-        self.__first_name = first_name.strip()
+        super().__init__(
+            teacher_id,
+            surname.strip(),
+            first_name.strip()
+        )
+
         self.__patronymic = patronymic.strip()
         self.__phone = phone
         self.__work_experience = work_experience
 
-    
     @classmethod
     def from_string(cls, data):
         """Создаёт преподавателя из строки."""
@@ -109,18 +112,6 @@ class Teacher:
         return cls.from_dict(data)
 
     @property
-    def teacher_id(self):
-        return self.__teacher_id
-
-    @property
-    def surname(self):
-        return self.__surname
-
-    @property
-    def first_name(self):
-        return self.__first_name
-
-    @property
     def patronymic(self):
         return self.__patronymic
 
@@ -132,24 +123,14 @@ class Teacher:
     def work_experience(self):
         return self.__work_experience
 
-
-
-
     def __str__(self):
         """Возвращает полную информацию о преподавателе."""
         return (
-            f"Преподаватель: {self.__surname} "
-            f"{self.__first_name} {self.__patronymic}\n"
-            f"ID: {self.__teacher_id}\n"
+            f"Преподаватель: {self.surname} "
+            f"{self.first_name} {self.__patronymic}\n"
+            f"ID: {self.teacher_id}\n"
             f"Телефон: {self.__phone}\n"
             f"Стаж работы: {self.__work_experience} лет"
-        )
-
-    def __repr__(self):
-        """Возвращает краткое представление преподавателя."""
-        return (
-            f"Teacher(id={self.__teacher_id}, "
-            f"name='{self.__surname} {self.__first_name}')"
         )
 
     def __eq__(self, other):
@@ -158,9 +139,9 @@ class Teacher:
             return NotImplemented
 
         return (
-            self.__teacher_id == other.__teacher_id
-            and self.__surname == other.__surname
-            and self.__first_name == other.__first_name
+            self.teacher_id == other.teacher_id
+            and self.surname == other.surname
+            and self.first_name == other.first_name
             and self.__patronymic == other.__patronymic
             and self.__phone == other.__phone
             and self.__work_experience == other.__work_experience
