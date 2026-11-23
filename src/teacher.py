@@ -1,35 +1,37 @@
 
+from .validators import (
+    validate_integer,
+    validate_name,
+    validate_phone
+)
+
+
 class Teacher:
     """Класс преподавателя учебного заведения."""
 
     @staticmethod
     def validate_teacher_id(value):
-        if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
-            raise ValueError("ID преподавателя должен быть положительным целым числом.")
+        validate_integer(value, "ID преподавателя", 1)
 
     @staticmethod
-    def validate_name(value, field_name):
-        if not isinstance(value, str) or not value.strip():
-            raise ValueError(f"Поле '{field_name}' не может быть пустым.")
+    def validate_surname(value):
+        validate_name(value, "Фамилия")
+
+    @staticmethod
+    def validate_first_name(value):
+        validate_name(value, "Имя")
+
+    @staticmethod
+    def validate_patronymic(value):
+        validate_name(value, "Отчество")
 
     @staticmethod
     def validate_phone(value):
-        if not isinstance(value, str):
-            raise ValueError("Телефон должен быть строкой.")
-
-        digits = "".join(char for char in value if char.isdigit())
-
-        if len(digits) < 10 or len(digits) > 15:
-            raise ValueError("Телефон должен содержать от 10 до 15 цифр.")
-
-        allowed_chars = set("+0123456789 -()")
-        if any(char not in allowed_chars for char in value):
-            raise ValueError("Телефон содержит недопустимые символы.")
+        validate_phone(value)
 
     @staticmethod
     def validate_work_experience(value):
-        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
-            raise ValueError("Стаж должен быть неотрицательным целым числом.")
+        validate_integer(value, "Стаж работы", 0)
 
     def __init__(
         self,
@@ -41,9 +43,9 @@ class Teacher:
         work_experience: int
     ):
         self.validate_teacher_id(teacher_id)
-        self.validate_name(surname, "Фамилия")
-        self.validate_name(first_name, "Имя")
-        self.validate_name(patronymic, "Отчество")
+        self.validate_surname(surname)
+        self.validate_first_name(first_name)
+        self.validate_patronymic(patronymic)
         self.validate_phone(phone)
         self.validate_work_experience(work_experience)
 
