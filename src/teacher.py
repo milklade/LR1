@@ -131,3 +131,37 @@ class Teacher:
     @property
     def work_experience(self):
         return self.__work_experience
+
+
+
+
+    def __str__(self):
+        """Возвращает полную информацию о преподавателе."""
+        return (
+            f"Преподаватель: {self.__surname} "
+            f"{self.__first_name} {self.__patronymic}\n"
+            f"ID: {self.__teacher_id}\n"
+            f"Телефон: {self.__phone}\n"
+            f"Стаж работы: {self.__work_experience} лет"
+        )
+
+    def __repr__(self):
+        """Возвращает краткое представление преподавателя."""
+        return (
+            f"Teacher(id={self.__teacher_id}, "
+            f"name='{self.__surname} {self.__first_name}')"
+        )
+
+    def __eq__(self, other):
+        """Сравнивает двух преподавателей по всем полям."""
+        if not isinstance(other, Teacher):
+            return NotImplemented
+
+        return (
+            self.__teacher_id == other.__teacher_id
+            and self.__surname == other.__surname
+            and self.__first_name == other.__first_name
+            and self.__patronymic == other.__patronymic
+            and self.__phone == other.__phone
+            and self.__work_experience == other.__work_experience
+        )
