@@ -56,6 +56,58 @@ class Teacher:
         self.__phone = phone
         self.__work_experience = work_experience
 
+    
+    @classmethod
+    def from_string(cls, data):
+        """Создаёт преподавателя из строки."""
+        parts = data.split(";")
+
+        if len(parts) != 6:
+            raise ValueError(
+                "Строка должна содержать 6 значений, разделённых ';'."
+            )
+
+        return cls(
+            teacher_id=int(parts[0]),
+            surname=parts[1],
+            first_name=parts[2],
+            patronymic=parts[3],
+            phone=parts[4],
+            work_experience=int(parts[5])
+        )
+
+    @classmethod
+    def from_dict(cls, data):
+        """Создаёт преподавателя из словаря."""
+        required_fields = {
+            "teacher_id",
+            "surname",
+            "first_name",
+            "patronymic",
+            "phone",
+            "work_experience"
+        }
+
+        if not isinstance(data, dict):
+            raise ValueError("Данные должны быть словарём.")
+
+        if set(data.keys()) != required_fields:
+            raise ValueError("Неверный набор полей преподавателя.")
+
+        return cls(**data)
+
+    @classmethod
+    def from_json(cls, json_data):
+        """Создаёт преподавателя из JSON-строки."""
+        import json
+
+        try:
+            data = json.loads(json_data)
+        except (TypeError, json.JSONDecodeError):
+            raise ValueError("Некорректный JSON.")
+
+        return cls.from_dict(data)
+
     @property
     def teacher_id(self):
         return self.__teacher_id
